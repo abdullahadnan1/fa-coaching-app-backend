@@ -54,13 +54,13 @@ const updateClass = async (req, res) => {
     if (!classInstance) {
       return res.status(404).json({ message: "Class not found" });
     }
-
+     const Date = new Date();
     // Update the class with the new data
     const updatedClass = await classInstance.update({
       CCODE: CCODE || classInstance.CCODE,
       CDESC: CDESC || classInstance.CDESC,
       CREATE_DATE: CREATE_DATE || classInstance.CREATE_DATE,
-      MODIFY_DATE: MODIFY_DATE || new Date(),
+      MODIFY_DATE: MODIFY_DATE || Date,
       USECOUNTS: USECOUNTS !== undefined ? USECOUNTS : classInstance.USECOUNTS,
       ACTIVE: ACTIVE !== undefined ? ACTIVE : classInstance.ACTIVE,
     });

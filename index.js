@@ -16,7 +16,7 @@ app.use('/api/year', Routes.yearRoutes);
 app.use('/api/period', Routes.periodRoutes)
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })

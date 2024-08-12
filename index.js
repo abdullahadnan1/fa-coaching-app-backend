@@ -3,6 +3,7 @@ const app = express();
 const Routes = require('./routes');
 
 
+
 // Middleware to parse JSON data
 app.use(express.json());
 
@@ -10,6 +11,8 @@ app.use(express.json());
 app.use('/api/class', Routes.classRoutes);
 app.use('/api/section', Routes.sectionRoutes);
 app.use('/api/subject', Routes.subjectRoutes);
+app.use('/api/student', Routes.studentRoutes);
+app.use('/api/year', Routes.yearRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3001;

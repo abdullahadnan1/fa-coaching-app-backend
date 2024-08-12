@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const Routes = require('./routes');
+const cors = require('cors');
 
 
 
 // Middleware to parse JSON data
 app.use(express.json());
+app.use(cors());
 
 // Use the class routes
 app.use('/api/class', Routes.classRoutes);
@@ -16,7 +18,7 @@ app.use('/api/year', Routes.yearRoutes);
 app.use('/api/period', Routes.periodRoutes)
 
 // Start the server
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })

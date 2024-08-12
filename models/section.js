@@ -33,7 +33,7 @@ const Section = sequelize.define('Section', {
     ACTIVE: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        // defaultValue: true,
     },
 }, {
    tableName: 'sections',

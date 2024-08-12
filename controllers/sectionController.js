@@ -61,7 +61,7 @@ const updateSection = async (req, res) => {
     section.CREATE_DATE = CREATE_DATE || section.CREATE_DATE;
     section.MODIFY_DATE = MODIFY_DATE || section.MODIFY_DATE;
     section.USECOUNTS = USECOUNTS || section.USECOUNTS;
-    section.ACTIVE = ACTIVE || section.ACTIVE;
+    section.ACTIVE = ACTIVE ?? section.ACTIVE;
 
     await section.save();
 

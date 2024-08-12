@@ -18,15 +18,17 @@ const Class = sequelize.define('Class', {
     },
     CREATE_DATE: {
         type: DataTypes.DATE,
-        allowNull: false
+        defaultValue: DataTypes.NOW,
+        allowNull: true
     },
     MODIFY_DATE: {
         type: DataTypes.DATE,
-        allowNull: false
+        defaultValue: DataTypes.NOW,
+        allowNull: true
     },
     USECOUNTS: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     ACTIVE: {
         type: DataTypes.BOOLEAN,
@@ -34,7 +36,12 @@ const Class = sequelize.define('Class', {
     }
 }, {
     tableName: 'classes', // Table name in the database
-    timestamps: false // Assuming no automatic timestamps are needed
+    timestamps: false, // Assuming no automatic timestamps are needed
+    hooks: {
+        beforeUpdate: (classInstance) => {
+            classInstance.MODIFY_DATE = new Date(); // Update MODIFY_DATE before saving
+        }
+    }
 });
 
 module.exports = Class;

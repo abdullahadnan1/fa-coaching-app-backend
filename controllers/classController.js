@@ -29,7 +29,7 @@ const deleteClass = async (req, res) => {
     const classInstance = await Class.findByPk(id);
 
     if (!classInstance) {
-      return res.status(404).json({ message: "class not found" });
+      return res.status(404).json({ message: "class not found" }); 
     }
 
     // Delete the class

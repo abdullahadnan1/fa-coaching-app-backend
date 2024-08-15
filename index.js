@@ -10,9 +10,10 @@ app.use(express.json());
 app.use('/api/class', Routes.classRoutes);
 app.use('/api/section', Routes.sectionRoutes);
 app.use('/api/subject', Routes.subjectRoutes);
+app.use('/api/teacher', Routes.teacherRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })

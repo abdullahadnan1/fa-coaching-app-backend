@@ -13,15 +13,16 @@ const Section = sequelize.define('Section', {
     },
     SECDESC: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     CREATE_DATE: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         defaultValue: DataTypes.NOW,
     },
     MODIFY_DATE: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
         allowNull: true,
     },
     USECOUNTS: {
@@ -32,11 +33,16 @@ const Section = sequelize.define('Section', {
     ACTIVE: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        // defaultValue: true,
     },
 }, {
    tableName: 'sections',
    timestamps: false,
+   hooks: {
+    beforeUpdate: (classInstance) => {
+        classInstance.MODIFY_DATE = new Date(); // Update MODIFY_DATE before saving
+    }
+}
 }); 
 
 module.exports = Section;

@@ -54,13 +54,13 @@ const updateClass = async (req, res) => {
     if (!classInstance) {
       return res.status(404).json({ message: "Class not found" });
     }
-
+     const date = new Date();
     // Update the class with the new data
     const updatedClass = await classInstance.update({
       CCODE: CCODE || classInstance.CCODE,
       CDESC: CDESC || classInstance.CDESC,
       CREATE_DATE: CREATE_DATE || classInstance.CREATE_DATE,
-      MODIFY_DATE: MODIFY_DATE || new Date(),
+      MODIFY_DATE: MODIFY_DATE || date,
       USECOUNTS: USECOUNTS !== undefined ? USECOUNTS : classInstance.USECOUNTS,
       ACTIVE: ACTIVE !== undefined ? ACTIVE : classInstance.ACTIVE,
     });
@@ -119,11 +119,30 @@ const getClassByCode = async (req, res) => {
   }
 };
 
+const getClassDescByCode = async (req, res) => {
+  try{
+    const { code } = req.params;
+
+    const classEntry = await Class.findOne({ attributes: ['CDESC'], where: { CCODE: code } });
+
+    if(!classEntry){
+      return res.status(404).json({ message: 'Class not found'});
+    }
+
+    return res.status(200).json(classEntry);
+
+  } catch (error) {
+    console.error('Error fetching Class Description:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   createClass,
   deleteClass,
   updateClass,
   getAllClasses,
   getClassById,
-  getClassByCode
+  getClassByCode,
+  getClassDescByCode
 };

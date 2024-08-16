@@ -5,11 +5,9 @@ const createPeriod = async (req, res) => {
 
   // Validate the Input
   if (!YCODE || !PRDMONTHS || !Array.isArray(PRDMONTHS)) {
-    return res
-      .status(400)
-      .json({
-        error: "YCODE and PRDMONTHS (array of month-status pairs) are required",
-      });
+    return res.status(400).json({
+      error: "YCODE and PRDMONTHS (array of month-status pairs) are required",
+    });
   }
 
   try {
@@ -23,11 +21,9 @@ const createPeriod = async (req, res) => {
 
       // Ensure each month and status is present
       if (!month || !status) {
-        return res
-          .status(400)
-          .json({
-            error: "Each month-status pair must include month and status",
-          });
+        return res.status(400).json({
+          error: "Each month-status pair must include month and status",
+        });
       }
 
       // Ensure month is in the format "Month-Year" (e.g., "August-2024")
@@ -50,52 +46,48 @@ const createPeriod = async (req, res) => {
     res.status(201).json({ message: "Periods created successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error'});
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const updatePeriod = async (req, res) => {
+  const { PRDID, YCODE, PRDMONTH, PRDSTATUS } = req.body;
+
+  // Validate the input
+  if (!PRDID) {
+    return res.status(400).json({ error: "PRDID is required" });
+  }
+
   try {
-    const { PRDID } = req.params;
-    const {
-      YEARS,
-      YID,
-      PRDMONTH,
-      PRDESC,
-      PRDSTDATE,
-      PRDEDDATE,
-      PRDSTATUS,
-      PRDSTATUSDESC,
-      CREATE_DATE,
-      MODIFY_DATE,
-    } = req.body;
+    // Build the update object
+    const updateFields = {};
+    if (YCODE) updateFields.YCODE = YCODE;
+    if (PRDMONTH) updateFields.PRDMONTH = PRDMONTH;
+    if (PRDSTATUS) updateFields.PRDSTATUS = PRDSTATUS;
 
-    const period = await Period.findByPk(PRDID);
-
-    if (!period) {
-      return res.status(404).json({ message: "Period not found" });
+    // Check if there are fields to update
+    if (Object.keys(updateFields).length === 0) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "At least one field (YCODE, PRDMONTH, PRDSTATUS) must be provided for update",
+        });
     }
 
-    const updatedPeriod = await period.update({
-      YEARS,
-      YID,
-      PRDMONTH,
-      PRDESC,
-      PRDSTDATE,
-      PRDEDDATE,
-      PRDSTATUS,
-      PRDSTATUSDESC,
-      CREATE_DATE: CREATE_DATE ? new Date(CREATE_DATE) : period.CREATE_DATE,
-      MODIFY_DATE: MODIFY_DATE ? new Date(MODIFY_DATE) : new Date(),
+    // Perform the update operation
+    const [updated] = await Period.update(updateFields, {
+      where: { PRDID: PRDID },
     });
 
-    return res.status(200).json({
-      message: "Updated Successfully",
-      data: updatedPeriod,
-    });
+    if (updated) {
+      res.status(200).json({ message: "Period Updated successfully" });
+    } else {
+      res.status(404).json({ error: "Period not found" });
+    }
   } catch (error) {
-    console.error("Error Updating period:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ error: 'Internal servcer error'});
   }
 };
 

@@ -4,7 +4,7 @@ const { createPeriod, updatePeriod, getPeriodById, getAllPeriods, deletePeriod }
 
 
 router.post('/', createPeriod);
-router.put('/:PRDID', updatePeriod);
+router.put('/', updatePeriod);
 router.get('/:PRDID', getPeriodById);
 router.get('/', getAllPeriods);
 router.delete('/:PRDID', deletePeriod);

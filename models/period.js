@@ -9,11 +9,11 @@ const Period = sequelize.define('Period', {
     },
     YEARS: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     YID: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     PRDMONTH: {
         type: DataTypes.STRING,
@@ -21,15 +21,15 @@ const Period = sequelize.define('Period', {
     },
     PRDESC: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     PRDSTDATE: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
     PRDEDDATE: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
     PRDSTATUS: {
         type: DataTypes.STRING,
@@ -39,9 +39,14 @@ const Period = sequelize.define('Period', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    YCODE: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     CREATE_DATE: {
         type: DataTypes.DATE,
         allowNull: true,
+        defaultValue: DataTypes.NOW,
     },
     MODIFY_DATE: {
         type: DataTypes.DATE,
@@ -50,6 +55,14 @@ const Period = sequelize.define('Period', {
 }, {
     timestamps: false,
     tableName: 'periods',
+    hooks: {
+        beforeCreate: (period, options) => {
+         period.CREATE_DATE = new Date();
+        },
+        beforeUpdate: (period, options) => {
+            period.MODIFY_DATE = new Date();
+        }
+    }
 });
 
 module.exports = Period;

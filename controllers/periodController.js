@@ -1,40 +1,56 @@
 const Period = require("../models/period");
 
 const createPeriod = async (req, res) => {
+  const { YCODE, PRDMONTHS } = req.body;
+
+  // Validate the Input
+  if (!YCODE || !PRDMONTHS || !Array.isArray(PRDMONTHS)) {
+    return res
+      .status(400)
+      .json({
+        error: "YCODE and PRDMONTHS (array of month-status pairs) are required",
+      });
+  }
+
   try {
-    const {
-      YEARS,
-      YID,
-      PRDMONTH,
-      PRDESC,
-      PRDSTDATE,
-      PRDEDDATE,
-      PRDSTATUS,
-      PRDSTATUSDESC,
-      CREATE_DATE,
-      MODIFY_DATE,
-    } = req.body;
+    console.log("PRDMONTHS Received:", PRDMONTHS);
 
-    const newPeriod = await Period.create({
-      YEARS,
-      YID,
-      PRDMONTH,
-      PRDESC,
-      PRDSTDATE,
-      PRDEDDATE,
-      PRDSTATUS,
-      PRDSTATUSDESC,
-      CREATE_DATE: CREATE_DATE ? new Date(CREATE_DATE) : new Date(),
-      MODIFY_DATE: MODIFY_DATE ? new Date(MODIFY_DATE) : new Date(),
-    });
+    // Iterate through each month and status pair
+    for (const item of PRDMONTHS) {
+      console.log("Processing Item:", item);
 
-    return res.status(201).json({
-      message: "Created Successfully",
-      data: newPeriod,
-    });
+      const { month, status } = item;
+
+      // Ensure each month and status is present
+      if (!month || !status) {
+        return res
+          .status(400)
+          .json({
+            error: "Each month-status pair must include month and status",
+          });
+      }
+
+      // Ensure month is in the format "Month-Year" (e.g., "August-2024")
+      // const [monthName, year] = month.split("-");
+      // if (!monthName || !year) {
+      //   return res
+      //     .status(400)
+      //     .json({ message: 'Month must be in "Month-Year" format' });
+      // }
+
+      // Create the period entry
+      const periodData = {
+        YCODE: YCODE,
+        PRDMONTH: month,
+        PRDSTATUS: status,
+      };
+
+      await Period.create(periodData);
+    }
+    res.status(201).json({ message: "Periods created successfully" });
   } catch (error) {
-    console.error("Error creating Period:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error'});
   }
 };
 
@@ -131,8 +147,8 @@ const deletePeriod = async (req, res) => {
 
     return res.status(200).json({ message: "Period deleted successfully" });
   } catch (error) {
-    console.error('Error deleting period:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error("Error deleting period:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

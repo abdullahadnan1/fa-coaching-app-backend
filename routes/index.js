@@ -4,6 +4,7 @@ const subjectRoutes = require('./subjectRoutes');
 const studentRoutes = require('./studentRoutes');
 const yearRoutes = require('./yearRoutes');
 const periodRoutes  = require('./periodRoutes');
+const teacherRoutes = require('./teacherRoute');
 
 module.exports = {
     classRoutes,
@@ -11,5 +12,6 @@ module.exports = {
     subjectRoutes,
     studentRoutes,
     yearRoutes,
-    periodRoutes
+    periodRoutes,
+    teacherRoutes,
 };

@@ -97,7 +97,7 @@ const getSubjectByCode = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
+ 
 const getSubjectById = async (req, res) => {
   try {
     const { id } = req.params;

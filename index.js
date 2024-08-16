@@ -13,12 +13,16 @@ app.use(cors());
 app.use('/api/class', Routes.classRoutes);
 app.use('/api/section', Routes.sectionRoutes);
 app.use('/api/subject', Routes.subjectRoutes);
+<<<<<<< HEAD
 app.use('/api/student', Routes.studentRoutes);
 app.use('/api/year', Routes.yearRoutes);
 app.use('/api/period', Routes.periodRoutes)
+=======
+app.use('/api/teacher', Routes.teacherRoutes);
+>>>>>>> f1f4b1cf420938dbda6972338c5d2fa27d8e424e
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })

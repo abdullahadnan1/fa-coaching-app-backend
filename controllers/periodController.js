@@ -113,7 +113,9 @@ const getPeriodById = async (req, res) => {
 
 const getAllPeriods = async (req, res) => {
   try {
-    const periods = await Period.findAll();
+    const periods = await Period.findAll({
+      attributes: ['PRDID', 'YEARS', 'PRDMONTH', 'PRDSTATUS', 'YCODE']
+    });
 
     return res.status(200).json({
       message: "Fetched Successfully",
@@ -124,6 +126,9 @@ const getAllPeriods = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+
 
 const deletePeriod = async (req, res) => {
   try {
